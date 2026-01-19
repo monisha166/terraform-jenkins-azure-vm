@@ -1,3 +1,25 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
+resource "tls_private_key" "ssh_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
 resource "azurerm_resource_group" "rg" {
   name     = "jenkins-tf-rg"
   location = "East US"
@@ -40,14 +62,9 @@ resource "azurerm_linux_virtual_machine" "vm" {
     azurerm_network_interface.nic.id
   ]
 
-resource "tls_private_key" "ssh_key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
- }
-
   admin_ssh_key {
     username   = "azureuser"
-    public_key = tls_private_key.ssh_key.public_key_openssh 
+    public_key = tls_private_key.ssh_key.public_key_openssh
   }
 
   os_disk {
