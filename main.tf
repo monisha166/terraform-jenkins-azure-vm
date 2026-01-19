@@ -18,7 +18,7 @@ resource "tls_private_key" "ssh_key" {
 
 resource "azurerm_resource_group" "rg" {
   name     = "jenkins-tf-rg"
-  location = "East US"
+  location = "Korea Central"
 }
 
 resource "azurerm_virtual_network" "vnet" {
@@ -51,7 +51,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = "jenkins-vm"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  size                = "Standard_B1s"
+  size                = "Standard_D2s"
   admin_username      = "azureuser"
 
   network_interface_ids = [
